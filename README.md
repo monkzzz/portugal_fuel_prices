@@ -2,7 +2,7 @@
 
 ## Description
 
-Due the high oscilating Fuel prices I created two python scripts to get prices from DGEG - Direcção Geral de Energia e Geologia and calculate the cheapest one based on personal needs.
+Due the high oscilating Fuel prices in Portugal, I created two python scripts to get prices from DGEG - Direcção Geral de Energia e Geologia and calculate the cheapest one based on personal needs.
 
 
 ## Usage
