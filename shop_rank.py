@@ -125,9 +125,7 @@ while True:
         print('This is not a coordinate.')
 
 #My location
-#test purposes
-my_cordinates = (37.06527473772233, -8.093487615765525)
-#my_cordinates = (my_latitude, my_longitude)
+my_cordinates = (my_latitude, my_longitude)
 
 #Ask for the max radius you want to search the shops
 
