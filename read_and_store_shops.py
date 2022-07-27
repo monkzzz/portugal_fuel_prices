@@ -65,7 +65,6 @@ for data in cursor:
     #print (data_id)
     all_ids.append(data_id)
 
-
 #Headers to trick the website to not block us
 req = Request(url, headers={'User-Agent': 'XYZ/3.0'})
 
@@ -84,10 +83,10 @@ all_data = data_json["resultado"]
 
 counter = 0
 
-for valor in all_data:
+for value in all_data:
 
    #Id
-   id_shop = valor["Id"]
+   id_shop = value["Id"]
    #print (id_shop)
 
    #If the id is not present in the SQL database
@@ -97,39 +96,39 @@ for valor in all_data:
       #print("Not Present")
 
       #Name
-      name_shop = valor["Nome"]
+      name_shop = value["Nome"]
 
       #Brand
-      brand_shop = valor["Marca"]
+      brand_shop = value["Marca"]
 
       #District
-      district_shop = valor["Distrito"]
+      district_shop = value["Distrito"]
 
       #County
-      county_shop = valor["Municipio"]
+      county_shop = value["Municipio"]
 
       #Address
-      adress1_shop = valor["Morada"]
-      adress2_shop = valor["CodPostal"]
-      adress3_shop = valor["Localidade"]
+      adress1_shop = value["Morada"]
+      adress2_shop = value["CodPostal"]
+      adress3_shop = value["Localidade"]
         
       #Coordinates
-      latitude_shop = valor["Latitude"]
-      longitude_shop = valor["Longitude"]
+      latitude_shop = value["Latitude"]
+      longitude_shop = value["Longitude"]
 
       #Update date
-      update_time = valor["DataAtualizacao"]
+      update_time = value["DataAtualizacao"]
 
-      #Tipo Combustivel
-      fuel_type = valor["Combustivel"]
+      #Fuel Type
+      fuel_type = value["Combustivel"]
 
       #Rename in case of big name
       fuel_type = rename(fuel_type)
 
       #print(fuel_type)
 
-      #Preco Combustivel
-      fuel_price = valor["Preco"]
+      #Fuel Price
+      fuel_price = value["Preco"]
       #print (fuel_price)
 
       # Preparing SQL query to INSERT a record into the database.
@@ -137,16 +136,12 @@ for valor in all_data:
 
       val1 = (id_shop, name_shop, brand_shop, district_shop, county_shop, adress1_shop, adress2_shop, adress3_shop, latitude_shop, longitude_shop, update_time, fuel_price)
 
-      #print (sql1)
-      #print (val1)
-
       try:
          # Executing the SQL command
          #Insert one piece of data
          cursor.execute(sql1, val1)
 
          # Commit your changes in the database
-         #print ("ok")
          conn.commit()
 
          counter+=1
@@ -160,12 +155,12 @@ for valor in all_data:
          conn.rollback()
 
    else:
-      #If id present in database
+      #If id is present in database
       #Update date
-      update_time = valor["DataAtualizacao"]
+      update_time = value["DataAtualizacao"]
 
       #Tipo Combustivel
-      fuel_type = valor["Combustivel"]
+      fuel_type = value["Combustivel"]
 
       #Rename in case of big name
       fuel_type = rename(fuel_type)
@@ -179,45 +174,23 @@ for valor in all_data:
       #Retrieving single row
       sql_select_date = f"SELECT {fuel_type_date} FROM {table_name} where Id = {id_shop} "
       cursor.execute(sql_select_date)
-      datas=cursor.fetchone()[0]
-
-      #print("ID")
-      #print(id_shop)
-      #print("fuel_type_date_json")
-      #print(update_time)
-      #print("fuel_type_date_sql")
-      #print(datas)
-      #print("replace")
+      dates=cursor.fetchone()[0]
 
       #convert sql date to the format it is present on the json
       #make sure to do it only if a date is present
-      if datas:
-         datas = datas.strftime("%Y-%m-%d %H:%M")
-      #print("replace")
-      #print(datas)
+      if dates:
+         dates = dates.strftime("%Y-%m-%d %H:%M")
 
       #Check if price information on the sql is out of date
-      if update_time != datas:
-         #print("ID")
-         #print(id_shop)
-         #print("é diferente")
-         #print("fuel_type_date_json")
-         #print(update_time)
-         #print("fuel_type_date_sql")
-         #print(datas)
-         #print("Updated")
+      if update_time != dates:
 
-         #Preco Combustivel
-         fuel_price = valor["Preco"]
+         #Fuel Price
+         fuel_price = value["Preco"]
          #print (fuel_price)
 
          # Preparing SQL query to update a record into the database.
-         #sql2 = "UPDATE shops SET fuel_type = fuel_price WHERE Id = id_shop"
          sql2 = f"UPDATE {table_name} SET {fuel_type} = %s , {fuel_type_date} = %s WHERE Id = %s"
          val2 = (fuel_price, update_time, id_shop)
-
-         #print (sql2)
-         #print (val2)
 
          try:
             # Executing the SQL command
