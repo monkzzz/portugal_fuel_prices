@@ -21,7 +21,7 @@ In the end it calculates which is the best 3 fuel shops based on how many liters
 
 ### Project Requirements
 
-You need to previously create a database and insert the connection data in 
+You need to previously create a database and insert the connection data in both scripts
 
 
 ```python
