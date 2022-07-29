@@ -143,6 +143,9 @@ for value in all_data:
 
          # Commit your changes in the database
          conn.commit()
+         #print("ID")
+         #print (id_shop)
+         #print ("CREATED")
 
          counter+=1
    
